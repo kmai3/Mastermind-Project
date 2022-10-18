@@ -20,16 +20,21 @@ using namespace std;
 //Function Prototypes
 int *createb(const int);
 bool game(int *, const int);
+int *dpboard(const int);
 //Execution of Code Begins here
 int main(int argc, char** argv) {
     //Set the random number seed here
     srand(time(0));
-    int col=8;
+    const int COL=8;
+    string useri, work="Yes";
     //Putting something in main is lazy, but is not part of the class
     //Then again technically even functions are lazy because putting everything
     //In classes is and will look better
-    int *test=createb(col);
-    if (game(test, col)){
+    cout<<"No Duplicates is disabled by default, do you want to enable duplicates, type Yes"<<endl;
+    cout<<"Case Sensitive"<<endl;
+    cin>>useri;
+    int *test=(useri==work)? dpboard(COL):createb(COL);
+    if (game(test, COL)){
         cout<<"Congrats you Beat the game" << endl;
     }else{
         cout<<"You failed better luck next time"<<endl;
@@ -88,8 +93,16 @@ int *dpboard(const int COL){
     }
     return board;
 }
-bool game(int *board, const int COL){
+bool game(int *board, const int MAX){
     int rounds=0;
+    // this is lazy COL should not be capitalize 
+    int COL=MAX+10;
+    //Userinput how big the sequence is
+    while(COL>MAX){
+        cout<<"Input a number smaller than "<<MAX<<endl;
+        cout<<"This will be your sequence size"<<endl;
+        cin>>COL;
+    }
     bool solved=false;
     int useri[COL];
     unsigned short result[COL];
@@ -125,10 +138,10 @@ bool game(int *board, const int COL){
                 result[i]=2;
             }
         }
+        //checks if player wins
         for(int i=0; i<COL; i++){
             check+=result[i];
         }
-        rounds+=1;
         for(int i=0; i<COL; i++){
             if(result[i] == 0){
                 blank+=1;
@@ -140,6 +153,7 @@ bool game(int *board, const int COL){
                 red+=1;
             }
         }
+        //front end
         cout<<"Round 1: ";
         for(int i=0; i<COL; i++){
             stemp=(useri[i]==0) ? "[White] ": (useri[i]==1) ? "[Black] ": 
@@ -154,9 +168,12 @@ bool game(int *board, const int COL){
         cout<<"White: " << white;
         cout<<endl;
         if(check==2*COL){ 
+            //if you win
             solved=true;
             return solved;
         }
     }
+    //Adds round at the end
+    rounds+=1;
     return solved;
 }
