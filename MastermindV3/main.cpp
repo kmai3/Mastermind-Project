@@ -130,7 +130,12 @@ bool game(int *board, const int MAX){
             for(int j=0; j<COL; j++){
                 // 0 is nothing
                 // 1 is color existed in sequence
-                result[i]=(useri[i]==board[j])?1:0;
+                if((useri[i]==board[j])){
+                    result[i]=1;
+                    j=COL-1;
+                }else{
+                    result[i]=0;
+                }
             }
             // if color and placement matches changes color to 2
             if(useri[i]==board[i]){
